@@ -13,10 +13,11 @@ $gutter: 10px;
 .row-container {
   margin: 0 -$gutter;
   padding-bottom: ($gutter * 3);
+  font-size: 0;
   @include clearfix;
   @include box-sizing(border-box);
   > div {
-    float: left;
+    display-block;
     border-left: $gutter solid transparent;
     border-right: $gutter solid transparent;
     @include box-sizing(border-box);
