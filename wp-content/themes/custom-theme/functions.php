@@ -1,76 +1,65 @@
 <?php
 
-add_theme_support('menus');
-add_theme_support('post-thumbnails');
-// add_image_size('test-thumbnail', 360, 176, TRUE);
+add_theme_support( 'menus' );
+add_theme_support( 'post-thumbnails' );
+// add_image_size( 'test-thumbnail', 360, 176, TRUE);
 
 /** Custom header function */
 $defaults = array(
-	'width'           => false,
-	'height'         	=> false,
-	'default-image'		=> get_bloginfo('template_directory') . '/images/logo.png',
-	'random-default'	=> false,
-	'flex-height'     => false,
-	'flex-width'      => false,
-	'header-text'     => false,
-	'uploads'         => true
+	'width'          => false,
+	'height'         => false,
+	'default-image'  => get_bloginfo( 'template_directory' ) . '/images/logo.png',
+	'random-default' => false,
+	'flex-height'    => false,
+	'flex-width'     => false,
+	'header-text'    => false,
+	'uploads'        => true
 );
-add_theme_support('custom-header', $defaults);
+add_theme_support( 'custom-header', $defaults );
 
 
 /** Register navigation menus */
-function rps_register_menus() {
+function olab_register_menus() {
   register_nav_menus(
   	array(
-  		'main_menu' => __('Huvudmeny', 'xbrdr'),
-  		'about_us_menu' => __('Om Oss meny', 'xbrdr')
+  		'main_menu' => __( 'Huvudmeny', 'ibmetall' ),
   	)
   );
 }
-add_action('init', 'rps_register_menus');
+add_action( 'init', 'olab_register_menus' );
 
 /** Register widget areas */
-function rps_register_widget_areas() {
+function olab_register_widget_areas() {
   register_sidebar(
   	array(
-			'name' => __('Footer', 'xbrdr'),
-			'id' => 'rps-footer-widget',
+		'name' => __( 'Footer', 'ibmetall' ),
+		'id' => 'olab-footer-widget',
 	    'before_widget' => '',
 	    'after_widget' => '',
 	    'before_title' => '<div class="title">',
 	    'after_title' => '</div>'
 		)
 	);
-	register_sidebar(
-  	array(
-			'name' => __('Press Sida Widget', 'xbrdr'),
-			'id' => 'rps-press-widget',
-	    'before_widget' => '',
-	    'after_widget' => '',
-	    'before_title' => '<strong>',
-	    'after_title' => '</strong>'
-		)
-	);
 }
-add_action('init', 'rps_register_widget_areas');
+add_action( 'init', 'olab_register_widget_areas' );
 
 
 /** Set useful site constants */
-function rps_set_constants() {
-	define('ROOT', get_bloginfo('template_directory'));
-	define('IMG', get_bloginfo('template_directory') . '/images');
-	define('JS', get_bloginfo('template_directory') . '/js');
-	define('CSS', get_bloginfo('template_directory') . '/css');
-	define('URL', get_bloginfo('url'));
-	define('AKISMET_KEY', '9fd1d87831df');
+function olab_set_constants() {
+	define( 'ROOT', get_bloginfo( 'template_directory' ) );
+	define( 'IMG', get_bloginfo( 'template_directory' ) . '/images' );
+	define( 'JS', get_bloginfo( 'template_directory' ) . '/js' );
+	define( 'CSS', get_bloginfo( 'template_directory' ) . '/css' );
+	define( 'URL', get_bloginfo( 'url' ) );
+	define( 'AKISMET_KEY', '9fd1d87831df' );
 }
-add_action('init', 'rps_set_constants');
+add_action( 'init', 'olab_set_constants' );
 
 /** I18n */
-function rps_set_language() {
-	load_theme_textdomain('xbrdr', get_template_directory() . '/languages');
+function olab_set_language() {
+	load_theme_textdomain( 'ibmetall', get_template_directory() . '/languages' );
 }
-add_action('after_setup_theme', 'rps_set_language');
+add_action( 'after_setup_theme', 'olab_set_language' );
 
 
 /** Stop WordPress from hardcoding width and height attributes */
@@ -78,184 +67,184 @@ function remove_width_attribute( $html ) {
    $html = preg_replace( '/(width|height)="\d*"\s/', '', $html );
    return $html;
 }
-add_filter('post_thumbnail_html', 'remove_width_attribute', 10);
-add_filter('image_send_to_editor', 'remove_width_attribute', 10);
+add_filter( 'post_thumbnail_html', 'remove_width_attribute', 10 );
+add_filter( 'image_send_to_editor', 'remove_width_attribute', 10 );
 
 
 /** Remove dashboard widgets */
-function rps_remove_dashboard_widgets() {
-	remove_meta_box('dashboard_quick_press', 'dashboard', 'side');
-	remove_meta_box('dashboard_incoming_links', 'dashboard', 'normal');
-	remove_meta_box('dashboard_recent_drafts', 'dashboard', 'side');
-	remove_meta_box('dashboard_recent_comments', 'dashboard', 'normal');
+function olab_remove_dashboard_widgets() {
+	remove_meta_box( 'dashboard_quick_press', 'dashboard', 'side' );
+	remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'normal' );
+	remove_meta_box( 'dashboard_recent_drafts', 'dashboard', 'side' );
+	remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
 }
-add_action('wp_dashboard_setup', 'rps_remove_dashboard_widgets' );
+add_action( 'wp_dashboard_setup', 'olab_remove_dashboard_widgets' );
 
 
 /** Enqueue CSS + JS */
-function rps_enqueue_js_and_css() {
+function olab_enqueue_js_and_css() {
 	$jsglobals = array(
-		'templateDirectory'  => ROOT,
-		'url'								 => URL,
+		'templateDirectory' => ROOT,
+		'url'               => URL,
 	);
 
 	// CSS
-	wp_register_style('rps-main-css', CSS . '/main.css');
-	wp_enqueue_style('rps-main-css');
+	wp_register_style( 'olab-main-css', CSS . '/main.css' );
+	wp_enqueue_style( 'olab-main-css' );
 
   // JS
-	wp_enqueue_script('jquery');
-	wp_enqueue_script('rps-main-js', JS . '/main.js');
-	wp_localize_script('rps-main-js', 'jsGlobals', $jsglobals);
+	wp_enqueue_script( 'jquery' );
+	wp_enqueue_script( 'olab-main-js', JS . '/main.js' );
+	wp_localize_script( 'olab-main-js', 'jsGlobals', $jsglobals);
 }
-add_action('wp_enqueue_scripts', 'rps_enqueue_js_and_css');
+add_action( 'wp_enqueue_scripts', 'olab_enqueue_js_and_css' );
 
 /** Enqueue Admin CSS + JS */
-function rps_load_custom_wp_admin_style() {
+function olab_load_custom_wp_admin_style() {
 	$jsglobals = array(
 		'templateDirectory'  => ROOT,
 		'url'								 => URL,
 	);
-	wp_enqueue_script('rps-admin-js', JS . '/admin.js');
-  wp_register_style('rps-admin-css', CSS . '/admin.css', false, '1.0.0' );
-  wp_enqueue_style('rps-admin-css');
-	wp_localize_script('rps-admin-js', 'jsGlobals', $jsglobals);
+	wp_enqueue_script( 'olab-admin-js', JS . '/admin.js' );
+  	wp_register_style( 'olab-admin-css', CSS . '/admin.css', false, '1.0.0' );
+  	wp_enqueue_style( 'olab-admin-css' );
+	wp_localize_script( 'olab-admin-js', 'jsGlobals', $jsglobals);
 }
-add_action('admin_enqueue_scripts', 'rps_load_custom_wp_admin_style');
+add_action( 'admin_enqueue_scripts', 'olab_load_custom_wp_admin_style' );
 
 
 /** Remove WP version from header */
-remove_action('wp_head', 'wp_generator');
+remove_action( 'wp_head', 'wp_generator' );
 function blank_version() {
   return '';
 }
-add_filter('the_generator','blank_version');
+add_filter( 'the_generator','blank_version' );
 
 
 /** Tidy up the main navigation code */
-function rps_print_main_navigation() {
-  $walker = new rps_nav_walker();
-  $menuClass = 'main-navigation';
-  $id = 'main-navigation';
-	$defaults = array(
-		'menu'            => 'Main menu',
-		'container'       => '',
-		'container_class' => '',
-		'container_id'    => '',
-		'menu_class'      => $menuClass,
-		'menu_id'					=> $id,
-		'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
-		'depth'           => 0,
-		'walker'          => $walker,
-	);
-	return wp_nav_menu($defaults);
-}
+// function olab_print_main_navigation() {
+//   $walker = new olab_nav_walker();
+//   $menuClass = 'main-navigation';
+//   $id = 'main-navigation';
+// 	$defaults = array(
+// 		'menu'            => 'Main menu',
+// 		'container'       => '',
+// 		'container_class' => '',
+// 		'container_id'    => '',
+// 		'menu_class'      => $menuClass,
+// 		'menu_id'					=> $id,
+// 		'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+// 		'depth'           => 0,
+// 		'walker'          => $walker,
+// 	);
+// 	return wp_nav_menu($defaults);
+// }
 
 
-/** Custom navigation function to add active classes to stuff */
-class rps_nav_walker extends Walker_Nav_Menu {
-  function start_el(&$output, $item, $depth, $args) {
-		global $wp_query, $post;
-		$indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
+// /** Custom navigation function to add active classes to stuff */
+// class olab_nav_walker extends Walker_Nav_Menu {
+//   function start_el(&$output, $item, $depth, $args) {
+// 		global $wp_query, $post;
+// 		$indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
 
-		$class_names = $value = '';
+// 		$class_names = $value = '';
 
-		$classes = empty( $item->classes ) ? array() : (array) $item->classes;
-		$classes[] = 'menu-item-' . $item->ID;
+// 		$classes = empty( $item->classes ) ? array() : (array) $item->classes;
+// 		$classes[] = 'menu-item-' . $item->ID;
 
-		$class_names = join( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item, $args ) );
-		$class_names = $class_names ? ' class="' . esc_attr( $class_names ) . '"' : '';
+// 		$class_names = join( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item, $args ) );
+// 		$class_names = $class_names ? ' class="' . esc_attr( $class_names ) . '"' : '';
 
-		$id = apply_filters( 'nav_menu_item_id', 'menu-item-'. $item->ID, $item, $args );
-		$id = $id ? ' id="' . esc_attr( $id ) . '"' : '';
+// 		$id = apply_filters( 'nav_menu_item_id', 'menu-item-'. $item->ID, $item, $args );
+// 		$id = $id ? ' id="' . esc_attr( $id ) . '"' : '';
 
-		$output .= $indent . '<li' . $id . $value . $class_names .'>';
+// 		$output .= $indent . '<li' . $id . $value . $class_names .'>';
 
-		$attributes  = ! empty( $item->attr_title ) ? ' title="'  . esc_attr( $item->attr_title ) .'"' : '';
-		$attributes .= ! empty( $item->target )     ? ' target="' . esc_attr( $item->target     ) .'"' : '';
-		$attributes .= ! empty( $item->xfn )        ? ' rel="'    . esc_attr( $item->xfn        ) .'"' : '';
-		$attributes .= ! empty( $item->url )        ? ' href="'   . esc_attr( $item->url        ) .'"' : '';
+// 		$attributes  = ! empty( $item->attr_title ) ? ' title="'  . esc_attr( $item->attr_title ) .'"' : '';
+// 		$attributes .= ! empty( $item->target )     ? ' target="' . esc_attr( $item->target     ) .'"' : '';
+// 		$attributes .= ! empty( $item->xfn )        ? ' rel="'    . esc_attr( $item->xfn        ) .'"' : '';
+// 		$attributes .= ! empty( $item->url )        ? ' href="'   . esc_attr( $item->url        ) .'"' : '';
 
-		$item_output = $args->before;
-		$item_output .= '<a'. $attributes .'>';
-		$item_output .= $args->link_before . apply_filters( 'the_title', $item->title, $item->ID ) . $args->link_after;
-		$item_output .= '</a>';
-		$item_output .= $args->after;
+// 		$item_output = $args->before;
+// 		$item_output .= '<a'. $attributes .'>';
+// 		$item_output .= $args->link_before . apply_filters( 'the_title', $item->title, $item->ID ) . $args->link_after;
+// 		$item_output .= '</a>';
+// 		$item_output .= $args->after;
 
-		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
-	}
-}
+// 		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
+// 	}
+// }
 
 
 /** Include the custom post type class */
-include_once('includes/Custom-post-type-class.php');
+include_once( 'includes/Custom-post-type-class.php' );
 
 /** Create custom post type objects */
 // $cptArray = null;
 // $cptArray = array(
-// 	'cptName' => 'front_push',
-// 	'singularName' => __('front push', 'xbrdr'),
-// 	'pluralName' => __('front pushes', 'xbrdr'),
+// 	'cptName' => 'frontpush',
+// 	'singularName' => __( 'front push', 'ibmetall' ),
+// 	'pluralName' => __( 'front pushes', 'ibmetall' ),
 // 	'slug' => 'front-push',
-// 	'supports' => array('title'),
+// 	'supports' => array( 'title' ),
 // );
-// $push = new RPS_CreateCustomPostType($cptArray);
-// add_action('init', array(&$push, 'createPostType'));
+// $push = new olab_CreateCustomPostType($cptArray);
+// add_action( 'init', array(&$push, 'createPostType' ));
 
 
 
 
 /** Change the text of 'Enter title here' for Commitee members */
-// function rps_change_default_title($title) {
+// function olab_change_default_title($title) {
 //   $screen = get_current_screen();
 //   switch ($screen->post_type) {
 //   	case 'test':
-//   		$title = __('Ange testens namn', 'xbrdr');
+//   		$title = __( 'Ange testens namn', 'ibmetall' );
 //   		break;
 //   }
 //   return $title;
 // }
-// add_filter('enter_title_here', 'rps_change_default_title');
+// add_filter( 'enter_title_here', 'olab_change_default_title' );
 
 
 /**
  * Register meta boxes
  */
-// function rps_add_meta_boxes() {
+// function olab_add_meta_boxes() {
 // 	global $post;
 // 	add_meta_box(
-// 		'rps-meta',
-// 		__('Post Meta', 'xbrdr'),
-// 		'rps_print_post_meta',
+// 		'olab-meta',
+// 		__( 'Post Meta', 'ibmetall' ),
+// 		'olab_print_post_meta',
 // 		'product',
 // 		'normal',
 // 		'high'
 // 	);
 // }
-// add_action('add_meta_boxes', 'rps_add_meta_boxes');
+// add_action( 'add_meta_boxes', 'olab_add_meta_boxes' );
 
 
 /** Add extra meta to custom post types */
-// function rps_print_post_meta() {
+// function olab_print_post_meta() {
 // 	global $post;
 // 	$subheader = get_post_meta($post->ID, '_produkt-subheader', true);
 // 	$excerpt = get_post_meta($post->ID, '_produkt-excerpt', true);
 /*?>
-  	<label for="produkt-subheader"><?php _e('Ange en underrubrik', 'xbrdr'); ?></label>
-  	<input type="text" class="rps produkt-subheader" name="produkt-subheader" value="<?php echo esc_attr($subheader); ?>" />
-  	<label for="produkt-excerpt"><?php _e('Lägg till ett utdrag till produkten som visas ut på alla produkt sidor', 'xbrdr'); ?></label>
-  		<textarea class="rps produkt-excerpt" name="produkt-excerpt"><?php echo $excerpt; ?></textarea>
+  	<label for="produkt-subheader"><?php _e( 'Ange en underrubrik', 'ibmetall' ); ?></label>
+  	<input type="text" class="olab produkt-subheader" name="produkt-subheader" value="<?php echo esc_attr($subheader); ?>" />
+  	<label for="produkt-excerpt"><?php _e( 'Lägg till ett utdrag till produkten som visas ut på alla produkt sidor', 'ibmetall' ); ?></label>
+  		<textarea class="olab produkt-excerpt" name="produkt-excerpt"><?php echo $excerpt; ?></textarea>
  	<?php
 // }
 */
 
 
 /** Save post meta */
-// function rps_save_custom_meta() {
+// function olab_save_custom_meta() {
 // 	global $post;
 
 // 	// Stops WP from clearing post meta when autosaving
-// 	if( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) {
+// 	if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 // 	  return $post->ID;
 // 	}
 // 	if (isset($_POST['produkt-subheader'])) {
@@ -268,7 +257,7 @@ include_once('includes/Custom-post-type-class.php');
 // 	}
 
 // }
-// add_action('save_post', 'rps_save_custom_meta');
+// add_action( 'save_post', 'olab_save_custom_meta' );
 
 
 /** Footer Widget - show a language switcher in the header */
@@ -277,13 +266,13 @@ include_once('includes/Custom-post-type-class.php');
 // 	public function __construct() {
 // 		parent::__construct(
 // 	 		'logo_widget',
-// 			__('Logo Widget', 'xbrdr'),
-// 			array('description' => __('Displays a small logo', 'xbrdr'))
+// 			__( 'Logo Widget', 'ibmetall' ),
+// 			array( 'description' => __( 'Displays a small logo', 'ibmetall' ))
 // 		);
 // 	}
 
 //  	public function form($instance) {
-//  		_e('This widget will automatically a small L J Hotels logo. No configuration is required.', 'xbrdr');
+//  		_e( 'This widget will automatically a small L J Hotels logo. No configuration is required.', 'ibmetall' );
 // 	}
 
 // 	public function update($new_instance, $old_instance) {
@@ -299,14 +288,14 @@ include_once('includes/Custom-post-type-class.php');
 // }
 
 // /** Register the widget */
-// add_action('widgets_init', 'rps_register_widgets');
-// function rps_register_widgets() {
-// 	register_widget('Logo_Widget');
+// add_action( 'widgets_init', 'olab_register_widgets' );
+// function olab_register_widgets() {
+// 	register_widget( 'Logo_Widget' );
 // }
 
 
 /* My nicer excerpt function */
-function rps_nicer_excerpt($args = array()) {
+function olab_nicer_excerpt($args = array()) {
 	global $post;
 	$defaults = array(
 		'echo' => true,
@@ -314,7 +303,7 @@ function rps_nicer_excerpt($args = array()) {
 		'ellipsis' => '&hellip;',
 		'link' => true,
 		'linkClass' => 'read-more-link',
-		'linkText' => __('Läs mer', 'xbrdr'),
+		'linkText' => __( 'Läs mer', 'ibmetall' ),
 		'linkContainer' => 'p',
 		'allowedTags' => '<p><a><i><em><b><strong><ul><ol><li><span><blockquote>'
 	);
@@ -337,15 +326,15 @@ function rps_nicer_excerpt($args = array()) {
   	$text .= '<' . $args['linkContainer'] . ' class="' . $args['linkClass'] . '"><a href="' . get_permalink( $post->ID ) .  '" title="' . get_the_title( $post->ID ) . '">' . $args['linkText'] . '</a></' . $args['linkContainer'] . '>';
 	}
 	if( $args['echo'] ) {
- 		echo apply_filters('the_content', $text);
+ 		echo apply_filters( 'the_content', $text);
  	} else {
- 		return apply_filters('the_content', $text);
+ 		return apply_filters( 'the_content', $text);
  	}
 }
 
 
 /** Change crop point for cropped images */
-function rps_image_resize_dimensions($payload, $orig_w, $orig_h, $dest_w, $dest_h, $crop) {
+function olab_image_resize_dimensions($payload, $orig_w, $orig_h, $dest_w, $dest_h, $crop) {
 
 	// Change this to a conditional that decides whether you
 	// want to override the defaults for this image or not.
@@ -393,6 +382,6 @@ function rps_image_resize_dimensions($payload, $orig_w, $orig_h, $dest_w, $dest_
 	return array( 0, 0, (int) $s_x, (int) $s_y, (int) $new_w, (int) $new_h, (int) $crop_w, (int) $crop_h );
 
 }
-add_filter('image_resize_dimensions', 'rps_image_resize_dimensions', 10, 6);
+add_filter( 'image_resize_dimensions', 'olab_image_resize_dimensions', 10, 6);
 
 
